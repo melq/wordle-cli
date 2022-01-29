@@ -2,7 +2,9 @@ package wordle_cli
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
+	"math/rand"
 	"os"
 )
 
@@ -26,4 +28,7 @@ func loadWords(w *[]string) {
 func PlayWordle() {
 	var words []string
 	loadWords(&words)
+
+	answer := words[rand.Intn(len(words))]
+	fmt.Println(answer)
 }
