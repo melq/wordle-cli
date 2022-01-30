@@ -50,7 +50,7 @@ func PlayWordle() {
 	alphabet := map[rune]int{}
 	c := 'a'
 	for i := 0; i < 26; i++ {
-		alphabet[c] = 0
+		alphabet[rune(int(c)+i)] = UNCHECKED
 	}
 
 	rand.Seed(time.Now().UnixNano())
