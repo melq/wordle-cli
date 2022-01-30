@@ -3,6 +3,7 @@ package wordle_cli
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 const (
@@ -26,7 +27,7 @@ func PlayWordle() {
 		alphabet[tmp] = UNCHECKED
 	}
 
-	//rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano())
 	wordle := words[rand.Intn(len(words))]
 
 	for i := 0; i < 6; i++ {
