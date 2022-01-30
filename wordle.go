@@ -83,20 +83,22 @@ func PlayWordle() {
 
 	for i := 0; i < 6; i++ {
 		ans := InputWord()
-		if ans == wordle {
-			fmt.Println("correct!!")
-			break
-		}
 		res := CompareWordle(wordle, ans)
+		fmt.Println(res)
 		for j, v := range res {
 			switch v {
 			case UNUSED:
-				fmt.Printf("\x1b[41m%c\x1b[0m", ans[j])
+				fmt.Printf("\x1b[41m%c\x1b[0m ", ans[j])
 			case BITE:
-				fmt.Printf("\x1b[43m%c\x1b[0m", ans[j])
+				fmt.Printf("\x1b[43m%c\x1b[0m ", ans[j])
 			case EAT:
-				fmt.Printf("\x1b[42m%c\x1b[0m", ans[j])
+				fmt.Printf("\x1b[42m%c\x1b[0m ", ans[j])
 			}
+		}
+		fmt.Println()
+		if ans == wordle {
+			fmt.Println("correct!!")
+			break
 		}
 	}
 }
