@@ -66,12 +66,14 @@ func InputWord() string {
 }
 
 func PlayWordle() {
+	var resHistory [][5]int
+	alphabet := map[rune]int{}
+	var keys []rune
+
 	sc.Split(bufio.ScanWords)
 
 	loadWords(&words)
 
-	alphabet := map[rune]int{}
-	var keys []rune
 	c := 'a'
 	for i := 0; i < 26; i++ {
 		tmp := rune(int(c) + i)
@@ -86,6 +88,7 @@ func PlayWordle() {
 	for i := 0; i < 6; i++ { // try six times
 		ans := InputWord()
 		res := EvaluateAnswer(wordle, ans)
+		resHistory = append(resHistory, res)
 
 		fmt.Printf("%d: ", i+1)
 		for j, v := range res { // print answer color
@@ -119,6 +122,19 @@ func PlayWordle() {
 
 		if ans == wordle {
 			fmt.Println("correct!!")
+			for _, v := range resHistory { // print history
+				for _, vv := range v {
+					switch vv {
+					case UNUSED:
+						fmt.Printf("\x1b[41m  \x1b[0m ")
+					case BITE:
+						fmt.Printf("\x1b[43m  \x1b[0m ")
+					case EAT:
+						fmt.Printf("\x1b[42m  \x1b[0m ")
+					}
+				}
+				fmt.Println()
+			}
 			break
 		}
 	}
