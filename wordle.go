@@ -10,19 +10,14 @@ import (
 	"time"
 )
 
-var sc = bufio.NewScanner(os.Stdin)
-
-func next() string {
-	sc.Scan()
-	return sc.Text()
-}
-
 const (
 	UNCHECKED = iota
 	UNUSED
 	BITE
 	EAT
 )
+
+var words []string
 
 type Words struct {
 	W []string `json:"words"`
@@ -41,10 +36,39 @@ func loadWords(w *[]string) {
 	*w = words.W
 }
 
+var sc = bufio.NewScanner(os.Stdin)
+
+func next() string {
+	sc.Scan()
+	return sc.Text()
+}
+
+func isInWords(word string) bool {
+	for _, v := range words {
+		if word == v {
+			return true
+		}
+	}
+	return false
+}
+
+func InputWord() string {
+	for {
+		fmt.Println("Submit a five-letter word:")
+		word := next()
+		if len(word) != 5 {
+			continue
+		} else if isInWords(word) {
+			return word
+		} else {
+			fmt.Println("Not in word list")
+		}
+	}
+}
+
 func PlayWordle() {
 	sc.Split(bufio.ScanWords)
 
-	var words []string
 	loadWords(&words)
 
 	alphabet := map[rune]int{}
@@ -58,7 +82,7 @@ func PlayWordle() {
 	fmt.Println(wordle)
 
 	for i := 0; i < 6; i++ {
-		ans := next()
+		ans := InputWord()
 		if ans == wordle {
 			fmt.Println("correct!!")
 			break
