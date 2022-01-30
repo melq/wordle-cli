@@ -9,7 +9,7 @@ func contains(str string, c rune) bool {
 	return false
 }
 
-func EvaluateAnswer(wordle string, ans string) [5]int {
+func evaluateAnswer(wordle string, ans string) [5]int {
 	res := [5]int{}
 	for i, v := range ans {
 		if v == rune(wordle[i]) {

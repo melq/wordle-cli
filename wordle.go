@@ -66,9 +66,8 @@ func InputWord() string {
 }
 
 func PlayWordle() {
-	var resHistory [][5]int
+	var history [][5]int
 	alphabet := map[rune]int{}
-	var keys []rune
 
 	sc.Split(bufio.ScanWords)
 
@@ -77,7 +76,6 @@ func PlayWordle() {
 	c := 'a'
 	for i := 0; i < 26; i++ {
 		tmp := rune(int(c) + i)
-		keys = append(keys, tmp)
 		alphabet[tmp] = UNCHECKED
 	}
 
@@ -87,54 +85,21 @@ func PlayWordle() {
 
 	for i := 0; i < 6; i++ { // try six times
 		ans := InputWord()
-		res := EvaluateAnswer(wordle, ans)
-		resHistory = append(resHistory, res)
+		res := evaluateAnswer(wordle, ans)
+		history = append(history, res)
 
 		fmt.Printf("%d: ", i+1)
 		for j, v := range res { // print answer color
 			alphabet[rune(ans[j])] = v
-			switch v {
-			case UNUSED:
-				fmt.Printf("\x1b[41m%c\x1b[0m ", ans[j])
-			case BITE:
-				fmt.Printf("\x1b[43m%c\x1b[0m ", ans[j])
-			case EAT:
-				fmt.Printf("\x1b[42m%c\x1b[0m ", ans[j])
-			}
+			printCharWithStatus(v, rune(ans[j]))
 		}
-		j := 0
-		for _, v := range keys { // print alphabet list
-			if j%10 == 0 {
-				fmt.Println()
-			}
-			switch alphabet[v] {
-			case UNUSED:
-				fmt.Printf("\x1b[41m")
-			case BITE:
-				fmt.Printf("\x1b[43m")
-			case EAT:
-				fmt.Printf("\x1b[42m")
-			}
-			fmt.Printf("%c\u001B[0m ", v)
-			j++
-		}
+
+		printAlphabet(alphabet)
 		fmt.Printf("\n\n")
 
 		if ans == wordle {
-			fmt.Println("correct!!")
-			for _, v := range resHistory { // print history
-				for _, vv := range v {
-					switch vv {
-					case UNUSED:
-						fmt.Printf("\x1b[41m  \x1b[0m ")
-					case BITE:
-						fmt.Printf("\x1b[43m  \x1b[0m ")
-					case EAT:
-						fmt.Printf("\x1b[42m  \x1b[0m ")
-					}
-				}
-				fmt.Println()
-			}
+			fmt.Println("correct!")
+			printHistory(history)
 			break
 		}
 	}
