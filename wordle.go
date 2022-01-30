@@ -29,7 +29,6 @@ func PlayWordle() {
 
 	rand.Seed(time.Now().UnixNano())
 	wordle := words[rand.Intn(len(words))]
-	fmt.Println("wordle:", wordle)
 
 	for i := 0; i < 6; i++ {
 		ans := submitWord()
