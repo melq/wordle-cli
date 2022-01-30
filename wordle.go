@@ -62,10 +62,16 @@ func PlayWordle() {
 		if ans == wordle {
 			fmt.Println("correct!!")
 			break
-		} else {
-			res := CompareWordle(wordle, ans)
-			for i, _ := range res {
-
+		}
+		res := CompareWordle(wordle, ans)
+		for j, v := range res {
+			switch v {
+			case UNUSED:
+				fmt.Printf("\x1b[41m%c\x1b[0m", ans[j])
+			case BITE:
+				fmt.Printf("\x1b[43m%c\x1b[0m", ans[j])
+			case EAT:
+				fmt.Printf("\x1b[42m%c\x1b[0m", ans[j])
 			}
 		}
 	}
