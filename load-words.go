@@ -10,15 +10,15 @@ type Words struct {
 	W []string `json:"words"`
 }
 
-func loadWords(w *[]string) {
+func loadWords(wsp *[]string) {
 	b, err := os.ReadFile("words.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var words Words
-	if err = json.Unmarshal(b, &words); err != nil {
+	var w Words
+	if err = json.Unmarshal(b, &w); err != nil {
 		log.Fatal(err)
 	}
-	*w = words.W
+	*wsp = w.W
 }
