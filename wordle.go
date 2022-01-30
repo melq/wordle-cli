@@ -7,7 +7,6 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	"time"
 )
 
 const (
@@ -72,20 +71,26 @@ func PlayWordle() {
 	loadWords(&words)
 
 	alphabet := map[rune]int{}
+	var keys []rune
 	c := 'a'
 	for i := 0; i < 26; i++ {
-		alphabet[rune(int(c)+i)] = UNCHECKED
+		tmp := rune(int(c) + i)
+		keys = append(keys, tmp)
+		alphabet[tmp] = UNCHECKED
 	}
 
-	rand.Seed(time.Now().UnixNano())
+	//rand.Seed(time.Now().UnixNano())
 	wordle := words[rand.Intn(len(words))]
-	fmt.Println(wordle)
+	fmt.Println("wordle:", wordle)
 
 	for i := 0; i < 6; i++ {
 		ans := InputWord()
+
 		res := CompareWordle(wordle, ans)
-		fmt.Println(res)
+
+		fmt.Printf("%d: ", i+1)
 		for j, v := range res {
+			alphabet[rune(ans[j])] = v
 			switch v {
 			case UNUSED:
 				fmt.Printf("\x1b[41m%c\x1b[0m ", ans[j])
@@ -95,7 +100,24 @@ func PlayWordle() {
 				fmt.Printf("\x1b[42m%c\x1b[0m ", ans[j])
 			}
 		}
-		fmt.Println()
+		j := 0
+		for _, v := range keys {
+			if j%10 == 0 {
+				fmt.Println()
+			}
+			switch alphabet[v] {
+			case UNUSED:
+				fmt.Printf("\x1b[41m")
+			case BITE:
+				fmt.Printf("\x1b[43m")
+			case EAT:
+				fmt.Printf("\x1b[42m")
+			}
+			fmt.Printf("%c\u001B[0m ", v)
+			j++
+		}
+		fmt.Printf("\n\n")
+
 		if ans == wordle {
 			fmt.Println("correct!!")
 			break
