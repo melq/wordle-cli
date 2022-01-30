@@ -83,13 +83,12 @@ func PlayWordle() {
 	wordle := words[rand.Intn(len(words))]
 	fmt.Println("wordle:", wordle)
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 6; i++ { // try six times
 		ans := InputWord()
-
-		res := CompareWordle(wordle, ans)
+		res := EvaluateAnswer(wordle, ans)
 
 		fmt.Printf("%d: ", i+1)
-		for j, v := range res {
+		for j, v := range res { // print answer color
 			alphabet[rune(ans[j])] = v
 			switch v {
 			case UNUSED:
@@ -101,7 +100,7 @@ func PlayWordle() {
 			}
 		}
 		j := 0
-		for _, v := range keys {
+		for _, v := range keys { // print alphabet list
 			if j%10 == 0 {
 				fmt.Println()
 			}
