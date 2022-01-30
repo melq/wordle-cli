@@ -1,7 +1,6 @@
 package wordle_cli
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -35,41 +34,9 @@ func loadWords(w *[]string) {
 	*w = words.W
 }
 
-var sc = bufio.NewScanner(os.Stdin)
-
-func next() string {
-	sc.Scan()
-	return sc.Text()
-}
-
-func isInWords(word string) bool {
-	for _, v := range words {
-		if word == v {
-			return true
-		}
-	}
-	return false
-}
-
-func InputWord() string {
-	for {
-		fmt.Println("Submit a five-letter word:")
-		word := next()
-		if len(word) != 5 {
-			continue
-		} else if isInWords(word) {
-			return word
-		} else {
-			fmt.Println("Not in word list")
-		}
-	}
-}
-
 func PlayWordle() {
 	var history [][5]int
 	alphabet := map[rune]int{}
-
-	sc.Split(bufio.ScanWords)
 
 	loadWords(&words)
 
@@ -84,7 +51,7 @@ func PlayWordle() {
 	fmt.Println("wordle:", wordle)
 
 	for i := 0; i < 6; i++ { // try six times
-		ans := InputWord()
+		ans := submitWord()
 		res := evaluateAnswer(wordle, ans)
 		history = append(history, res)
 
